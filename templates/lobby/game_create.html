@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+{% load bootstrap4 %}
+
+
+{% block content %}
+<div align="center" >
+    <form method="post">
+        {% csrf_token %}
+         <div align="left" class="col-auto">
+            {{ form.as_p }}
+          </div>
+        <button type="submit">Guardar</button>
+    </form>
+</div>
+{% endblock %}

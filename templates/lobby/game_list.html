@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+{% load bootstrap4 %}
+
+{% block ajax %}
+    {% if 'player_name' not in request.session %}
+        {% if conflic_name %}
+            <script type="text/javascript">
+                function (data) {
+                    $("#conficName").show();
+                    alert('Nombre ya usado');
+                }
+            </script>
+        {% endif %}
+        <script type="text/javascript">
+              $(document).ready(function() {
+                 $("#modalName").modal("show");
+              });
+        </script>
+    {% endif %}
+   
+{% endblock %}
+
+
+{% block content %}
+    <div class="modal fade" id="modalName" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                    <h4 align="center" class="modal-title" id="myModalLabel">Nombre</h4>
+                </div>
+                <div class="modal-body" align="center">
+                    <form action="{% url 'lobby:save_session' %}" method="post">
+                     {% csrf_token %}
+                        <input id="playerName" class="form-control required" type="text" name="player_name">
+                        <button type="submit" class="btn btn-outline-success">OK</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="conficName" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                    <h4 align="center" class="modal-title" id="myModalLabel">Nombre ya en uso</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="welcome" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                    <h4 align="center" class="modal-title" id="myModalLabel">Bienvenido {{ request.session.player_name }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+     <div class="container">
+                <div align="center">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>Jugador</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if object_list %}
+                            {% for game in object_list %}
+                            <tr>
+                                <td>{{ game.id }}</td>
+                                <td>{{ game.name }}</td>
+                                <td>
+                                    <a class="btn btn-primary" href="{% url 'lobby:game_waiting' game.id %}">Unirse</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                                <h1>No hay partidas en espera</h1>
+                            {% endif %}
+                        </tbody>
+                    </table>
+
+                </div>
+     </div>
+{% endblock %}

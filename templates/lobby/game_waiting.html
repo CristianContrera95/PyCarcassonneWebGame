@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load bootstrap4 %}
+
+
+{% block content %}
+     <div class="container">
+        {% if players_name %}
+        {% for player in players_name %}
+            <label type="text">->{{ player.name }}</label>
+        {% endfor %}
+        {% else %}
+            <h2 align="center">Esperando usuarios</h2><br>
+        {% endif %}
+    </div>
+    <div class="container">
+        <a href="{% url 'game:init_game' game.id %}">
+            <button>Iniciar</button>
+        </a>
+    </div>
+{% endblock %}
